@@ -1,7 +1,6 @@
 const core = require("@actions/core");
 const { execSync } = require("child_process");
 const { context, getOctokit } = require("@actions/github");
-const { v4 } = require("uuid");
 
 const main = () => {
   const githubToken = core.getInput("github-token");
