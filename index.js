@@ -1,15 +1,13 @@
 const core = require("@actions/core");
 const { execSync } = require("child_process");
-const { GitHub, context } = require("@actions/github");
+const { context, getOctokit } = require("@actions/github");
+const { v4 } = require("uuid");
 
-const main = async () => {
-  const repoName = context.repo.repo;
-  const repoOwner = context.repo.owner;
+const main = () => {
   const githubToken = core.getInput("github-token");
   const testCommand = core.getInput("test-command") || "npx jest";
-  const prNumber = context.payload.number;
-
-  const githubClient = new GitHub(githubToken);
+  const sha = context.payload.pull_request?.head.sha ?? context.sha;
+  const octokit = getOctokit(githubToken);
 
   const codeCoverage = execSync(testCommand).toString();
   let coveragePercentage = execSync(
@@ -17,19 +15,31 @@ const main = async () => {
   ).toString();
   coveragePercentage = parseFloat(coveragePercentage).toFixed(2);
 
-  const commentBody = `<p>Total Coverage: <code>${coveragePercentage}</code></p>
-<details><summary>Coverage report</summary>
-<p>
-<pre>${codeCoverage}</pre>
-</p>
-</details>`;
+  const body = `<p>Total Coverage: <code>${ coveragePercentage }</code></p>
+                <details>
+                  <summary>Coverage report</summary>
+                  <p>
+                    <pre>${ codeCoverage }</pre>
+                  </p>
+                </details>`;
 
-  await githubClient.issues.createComment({
-    repo: repoName,
-    owner: repoOwner,
-    body: commentBody,
-    issue_number: prNumber,
-  });
+  return octokit
+    .rest
+    .checks
+    .create({
+      ...context.repo,
+      head_sha: sha,
+      name: stripAnsi(actionName),
+      conclusion: success ? 'success' : 'failure',
+      external_id: v4(),
+      output
+  })
+  .catch(e => {
+    if (e.message === 'Resource not accessible by integration')
+      warning('This library requires the write permission of checks to operate.\n  Skip write check step.');
+    else
+      throw e;
+  })
 };
 
-main().catch(err => core.setFailed(err.message));
+main().catch((e) => core.setFailed(e));
