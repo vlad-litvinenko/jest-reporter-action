@@ -6,7 +6,7 @@ const { v4 } = require("uuid");
 const main = () => {
   const githubToken = core.getInput("github-token");
   const testCommand = core.getInput("test-command") || "npx jest";
-  const sha = context.payload.pull_request?.head.sha ?? context.sha;
+  const sha = context.payload.pull_request.head.sha || context.sha;
   const octokit = getOctokit(githubToken);
 
   const codeCoverage = execSync(testCommand).toString();
