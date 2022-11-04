@@ -1,4 +1,4 @@
-const core = require("@actions/core");
+const core = require('@actions/core');
 const { execSync } = require("child_process");
 
 const main = () => {
@@ -12,15 +12,13 @@ const main = () => {
 
   coveragePercentage = parseFloat(coveragePercentage).toFixed(2);
 
-  const body = `<p>Total Coverage: <code>${ coveragePercentage }</code></p>
-                <details>
-                  <summary>Coverage report</summary>
-                  <p>
-                    <pre>${ codeCoverage }</pre>
-                  </p>
-                </details>`;
-
-  core.notice(body);
+  core.info(`<p>Total Coverage: <code>${ coveragePercentage }</code></p>
+              <details>
+                <summary>Coverage report</summary>
+                <p>
+                  <pre>${ codeCoverage }</pre>
+                </p>
+              </details>`);
 };
 
 main().catch((e) => core.setFailed(e));
