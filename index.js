@@ -21,4 +21,4 @@ const main = () => {
               </details>`);
 };
 
-main().catch((e) => core.setFailed(e));
+main();
