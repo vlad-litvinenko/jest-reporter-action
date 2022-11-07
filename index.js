@@ -12,6 +12,7 @@ const main = () => {
 
   coveragePercentage = parseFloat(coveragePercentage).toFixed(2);
 
+  console.log("######### PRINT COVERAGE! ################");
   core.info(`<p>Total Coverage: <code>${ coveragePercentage }</code></p>
               <details>
                 <summary>Coverage report</summary>
