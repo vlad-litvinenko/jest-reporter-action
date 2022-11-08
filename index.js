@@ -1,7 +1,6 @@
 const core = require('@actions/core');
 const { context, GitHub } = require('@actions/github');
 const { execSync } = require("child_process");
-const { stripAnsi } = require("strip-ansi");
 
 const main = () => {
   const token = core.getInput('github-token');
@@ -35,7 +34,7 @@ const main = () => {
   const github = new GitHub(token)
   github.checks.create({
       ...context.repo,
-      name: stripAnsi('Coverage Report'),
+      name: 'Coverage Report',
       head_sha: sha,
       conclusion: 'success',
       output
