@@ -19,7 +19,7 @@ const main = () => {
     title: 'Code coverage',
     summary: 'Jest code coverage',
     annotations: [{
-      path: '',
+      path: 'src/index.tsx',
       start_line: 1,
       end_line: 1,
       annotation_level: 'notice',
