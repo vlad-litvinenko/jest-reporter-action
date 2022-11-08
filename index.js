@@ -3,6 +3,7 @@ const { context, GitHub } = require('@actions/github');
 const { execSync } = require("child_process");
 
 const main = () => {
+  const sha = context.sha;
   const token = core.getInput('github-token');
   const testCommand = core.getInput("test-command") || "npx jest";
   const codeCoverage = execSync(testCommand).toString();
