@@ -8,28 +8,15 @@ const main = () => {
   const testCommand = core.getInput("test-command") || "npx jest";
   const codeCoverage = execSync(testCommand).toString();
 
-  
-  let coveragePercentage = execSync(
-    "npx coverage-percentage ./coverage/lcov.info --lcov"
-  ).toString();
-
-  coveragePercentage = parseFloat(coveragePercentage).toFixed(2);
-
   const output = {
     title: 'Code coverage',
     summary: 'Jest code coverage',
     annotations: [{
-      path: 'src/index.tsx',
+      path: 'src/',
       start_line: 1,
       end_line: 1,
       annotation_level: 'notice',
-      message: `<p>Total Coverage: <code>${ coveragePercentage }</code></p>
-                  <details>
-                    <summary>Coverage report</summary>
-                    <p>
-                      <pre>${ codeCoverage }</pre>
-                    </p>
-                  </details>`
+      message: codeCoverage
     }]
   }
   const github = new GitHub(token)
