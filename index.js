@@ -1,5 +1,5 @@
 const core = require('@actions/core');
-const { GitHub } = require('@actions/github');
+const { context, GitHub } = require('@actions/github');
 const { execSync } = require("child_process");
 
 const main = () => {
