@@ -14,7 +14,7 @@ const main = () => {
   ).toString();
 
   coveragePercentage = parseFloat(coveragePercentage).toFixed(2);
-  
+
   const output = {
     title: 'Code coverage',
     summary: 'Jest code coverage',
@@ -33,7 +33,7 @@ const main = () => {
     }]
   }
   const github = new GitHub(token)
-  github.checks.create({
+  return github.checks.create({
       ...context.repo,
       name: 'Coverage Report',
       head_sha: sha,
@@ -43,4 +43,4 @@ const main = () => {
     
 };
 
-main();
+main().catch((e) => core.setFailed(e.message));
