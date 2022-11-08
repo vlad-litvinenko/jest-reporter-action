@@ -22,7 +22,7 @@ const main = () => {
   const github = new GitHub(token)
   return github.checks.create({
       ...context.repo,
-      name: 'Coverage Report',
+      title: 'Code coverage',
       head_sha: sha,
       conclusion: 'success',
       output
