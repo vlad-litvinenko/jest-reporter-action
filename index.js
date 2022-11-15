@@ -6,10 +6,12 @@ const main = () => {
   const sha = context.sha;
   const token = core.getInput('github-token');
   const dir = core.getInput('working-directory');
-  const testCommand = core.getInput("test-command") || "npx jest";
-  if (dir) {
-    testCommand = `cd ${dir}; ${testCommand}`;
-  }
+  
+  const commands = [];
+  if (dir) commands.push(`cd ${dir}`);
+  commands.push(core.getInput("test-command") || "npx jest");
+
+  const testCommand = commands.join('; ');
 
   const codeCoverage = execSync(testCommand).toString();
 
