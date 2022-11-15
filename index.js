@@ -5,12 +5,17 @@ const { execSync } = require("child_process");
 const main = () => {
   const sha = context.sha;
   const token = core.getInput('github-token');
+  const dir = core.getInput('working-directory');
   const testCommand = core.getInput("test-command") || "npx jest";
+  if (dir) {
+    testCommand = `cd ${dir}; ${testCommand}`;
+  }
+
   const codeCoverage = execSync(testCommand).toString();
 
   const output = {
     title: 'Code coverage',
-    summary: 'Jest code coverage',
+    summary: '',
     annotations: [{
       path: 'src/',
       start_line: 1,
@@ -22,7 +27,7 @@ const main = () => {
   const github = new GitHub(token)
   return github.checks.create({
       ...context.repo,
-      title: 'Code coverage',
+      name: 'Code coverage',
       head_sha: sha,
       conclusion: 'success',
       output
