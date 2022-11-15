@@ -11,6 +11,9 @@ inputs:
   test-command:
     description: "Specify a command to run the tests"
     required: false
+  working-directory:
+    description: "Specify working directory"
+    required: false
 runs:
   using: "node12"
   main: "index.js"
